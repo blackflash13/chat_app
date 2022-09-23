@@ -7,6 +7,8 @@ const User = require('./models/User');
 const Message = require('./models/Message')
 const helmet = require('helmet');
 const cors = require('cors');
+const PORT = 3001 || process.env.PORT;
+
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -19,7 +21,6 @@ app.use('/rooms', roomRoutes)
 app.use(errorMiddleware);
 
 const server = require('http').createServer(app);
-const PORT = 3001;
 const io = require('socket.io')(server, {
     cors: {
         origin: 'http://localhost:3000', methods: ['GET', 'POST']

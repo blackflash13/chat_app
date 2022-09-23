@@ -11,6 +11,7 @@ function Login() {
     const navigate = useNavigate();
     const {socket} = useContext(AppContext);
     const [loginUser, {isLoading, error}] = useLoginUserMutation();
+    console.log(error)
 
     function handleLogin(e) {
         e.preventDefault();
@@ -31,7 +32,7 @@ function Login() {
                 <Col md={12} className="d-flex align-items-center  vh-100 justify-content-center flex-direction-column">
                     <Form style={{width: "80%", maxWidth: 500}} onSubmit={handleLogin}>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
-                            {error && <p className="alert alert-danger">{error.data}</p>}
+                            {error && <p className="alert alert-danger">{error.data.message}</p>}
                             <Form.Label>Email address</Form.Label>
                             <Form.Control type="email" placeholder="Enter email"
                                           onChange={(e) => setEmail(e.target.value)} value={email} required/>

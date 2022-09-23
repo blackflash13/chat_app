@@ -22,6 +22,9 @@ class UserService {
 
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({...userDto});
+        
+        user.status = 'online';
+        await user.save();
 
         await tokenService.saveToken(
             userDto.id,

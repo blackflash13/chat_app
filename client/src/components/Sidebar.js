@@ -9,15 +9,7 @@ function Sidebar() {
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
     const {
-        socket,
-        setMembers,
-        members,
-        setCurrentRoom,
-        setRooms,
-        privateMemberMsg,
-        rooms,
-        setPrivateMemberMsg,
-        currentRoom
+        socket, setMembers, members, setCurrentRoom, setRooms, privateMemberMsg, rooms, setPrivateMemberMsg, currentRoom
     } = useContext(AppContext);
 
     function joinRoom(room, isPublic = true) {
@@ -74,8 +66,7 @@ function Sidebar() {
     if (!user) {
         return <></>;
     }
-    return (
-        <>
+    return (<>
             <h2>Rooms</h2>
             <ListGroup>
                 {rooms.map((room, idx) => (
@@ -83,14 +74,13 @@ function Sidebar() {
                                     style={{cursor: "pointer", display: "flex", justifyContent: "space-between"}}>
                         {room.name} {currentRoom !== room.name &&
                         <span className="badge rounded-pill bg-primary">{user.newMessages[room.name]}</span>}
-                    </ListGroup.Item>
-                ))}
+                    </ListGroup.Item>))}
             </ListGroup>
             <h2>Members</h2>
-            {members.map((member) => (
-                <ListGroup.Item key={member.id} style={{cursor: "pointer"}}
-                                active={privateMemberMsg?._id == member?._id}
-                                onClick={() => handlePrivateMemberMsg(member)} disabled={member._id === user._id}>
+            {members.map((member) => (<ListGroup.Item key={member.id} style={{cursor: "pointer"}}
+                                                      active={privateMemberMsg?._id == member?._id}
+                                                      onClick={() => handlePrivateMemberMsg(member)}
+                                                      disabled={member._id === user._id}>
                     <Row>
                         <Col xs={2} className="member-status">
                             <img src={member.picture} className="member-status-img"/>
@@ -107,10 +97,8 @@ function Sidebar() {
                                 className="badge rounded-pill bg-primary">{user.newMessages[orderIds(member._id, user._id)]}</span>
                         </Col>
                     </Row>
-                </ListGroup.Item>
-            ))}
-        </>
-    );
+                </ListGroup.Item>))}
+        </>);
 }
 
 export default Sidebar;
