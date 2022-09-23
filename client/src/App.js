@@ -50,7 +50,7 @@ function App() {
                     <Route path="/profile" element={<Profile/>}/>
                 </Routes>
             </BrowserRouter>
-        </AppContext.Provider>
+        </AppContext.Provider> 
     );
 }
 
