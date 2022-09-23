@@ -62,7 +62,7 @@
 
 #
 
-### Unfollow new user endpoint
+### Unfollow new user endpoint 
 
 #### With Bearer(authorization) token
 
