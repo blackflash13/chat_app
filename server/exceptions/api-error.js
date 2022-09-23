@@ -27,6 +27,14 @@ module.exports = class ApiError extends Error {
         return new ApiError(404, "Такий користувач не зареєстрований в системі");
     }
 
+    static BadEmailForOTP() {
+        return new ApiError(404, "Bad email for find verify!");
+    }
+
+    static IncorrectOTPCode() {
+        return new ApiError(404, "Невірний код");
+    }
+
     static BadRequest(message, errors = []) {
         return new ApiError(400, message, errors);
     }

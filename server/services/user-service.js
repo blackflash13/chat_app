@@ -8,55 +8,44 @@ class UserService {
     async registration(email, password, name) {
         const candidate = await UserModel.findOne({email});
 
-        if (candidate)
-            throw ApiError.BadRequest(
-                `Користувач з електронною адресою ${email} вже зареєстрований на сайті!`
-            );
+        if (candidate) throw ApiError.BadRequest(`Користувач з електронною адресою ${email} вже зареєстрований на сайті!`);
 
         const hashPassword = await bcrypt.hash(password, 10);
         const user = await UserModel.create({
-            email,
-            name,
-            password: hashPassword,
+            email, name, password: hashPassword,
         });
 
-        const userDto = new UserDto(user);
-        const tokens = tokenService.generateTokens({...userDto});
-        
-        user.status = 'online';
-        await user.save();
-
-        await tokenService.saveToken(
-            userDto.id,
-            tokens.refreshToken,
-            tokens.accessToken
-        );
-        return {...userDto, userAppAccess: {...tokens}};
+        return "Next step in OTP code"
     }
 
     async login(email, password) {
         const user = await UserModel.findOne({email});
 
-        if (!user)
-            throw ApiError.BadRequest(
-                "Користувача з такою електронною адресою не знайдено!"
-            );
-
+        if (!user) throw ApiError.BadRequest("Користувача з такою електронною адресою не знайдено!");
         // const isPassEquals = await bcrypt.compare(password, user.password);
         // if (!isPassEquals) throw ApiError.BadRequest("Невірний пароль");
+        return "Login correct! Next step for login is input OTP code"
+    }
 
-        const userDto = new UserDto(user);
-        const tokens = tokenService.generateTokens({...userDto});
-        await tokenService.saveToken(
-            userDto.id,
-            tokens.refreshToken,
-            tokens.accessToken
-        );
+    async verify(email, code) {
+        const user = await UserModel.findOne({email});
 
-        user.status = 'online';
-        await user.save();
+        if (!user) throw ApiError.BadEmailForOTP()
 
-        return {...userDto, userAppAccess: {...tokens}};
+        // if (user.verify == code) {
+        if (code == "7531") {
+            user.status = 'online';
+            await user.save();
+
+            const userDto = new UserDto(user);
+            const tokens = tokenService.generateTokens({...userDto});
+            await tokenService.saveToken(userDto.id, tokens.refreshToken, tokens.accessToken);
+
+            return {...userDto, userAppAccess: {...tokens}};
+        } else {
+            throw ApiError.IncorrectOTPCode()
+        }
+
     }
 
     async logout(accessToken) {
@@ -73,8 +62,7 @@ class UserService {
             if (req.body[property]) user[property] = req.body[property];
         });
 
-        if (req.body.password)
-            user["password"] = await bcrypt.hash(req.body.password, 10);
+        if (req.body.password) user["password"] = await bcrypt.hash(req.body.password, 10);
 
         await user.save();
         return user;
@@ -111,14 +99,12 @@ class UserService {
         if (user) {
             await UserModel.deleteOne({_id: id});
             return {
-                msg: "Користувача видалено",
-                status: true,
+                msg: "Користувача видалено", status: true,
             };
         }
 
         return {
-            msg: "Такий користувач не зареєстрований в системі",
-            status: false,
+            msg: "Такий користувач не зареєстрований в системі", status: false,
         };
     }
 
@@ -165,6 +151,13 @@ class UserService {
 
     }
 
+    generateRandomInteger(low, high) {
+        const lowCeil = Math.ceil(low);
+        const highFloor = Math.floor(high);
+        const randomFloat = lowCeil + Math.random() * (highFloor - lowCeil);
+
+        return Math.floor(randomFloat);
+    }
 
 }
 

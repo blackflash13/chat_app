@@ -35,6 +35,9 @@ const UserSchema = new mongoose.Schema({
         type: Object,
         default: {}
     },
+    verify: {
+        type: Number
+    },
     status: {
         type: String,
         default: 'offline'
