@@ -1,6 +1,9 @@
 const router = require('express').Router();
 const Room = require('../models/Rooms');
 const Message = require("../models/Message");
+const UserModel = require("../models/User");
+const ApiError = require("../exceptions/api-error");
+const bcrypt = require("bcrypt");
 
 
 router.get('/', async (req, res) => {
@@ -40,6 +43,33 @@ router.post('/', async (req, res) => {
         res.status(400).json(msg)
     }
 })
+
+router.put('/:id', async (req, res) => {
+    try {
+        const room = await Room.findById(req.params.id);
+
+        if (!room) throw ApiError.BadRequest(`Room not found!!!`);
+
+        const updates = ["name"];
+        updates.forEach((property) => {
+            if (req.body[property]) room[property] = req.body[property];
+        });
+
+
+        await room.save();
+        res.status(201).json(room);
+    } catch (e) {
+        let msg;
+        if (e.code === 11000) {
+            msg = "Room already exists"
+        } else {
+            msg = e.message;
+        }
+        console.log(e);
+        res.status(400).json(msg)
+    }
+})
+
 
 router.delete('/:room', async (req, res) => {
     try {
