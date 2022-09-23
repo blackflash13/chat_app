@@ -110,7 +110,7 @@
 
 **type**: PUT
 
-**url**: [localhost:3001/rooms/:id](localhost:3001/rooms)
+**url**: [localhost:3001/rooms/:id](localhost:3001/rooms/632d7c006f59b1f7c30f73e9)
 
 **params**:
 
