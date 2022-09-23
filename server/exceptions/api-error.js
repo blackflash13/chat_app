@@ -15,6 +15,7 @@ module.exports = class ApiError extends Error {
     static NewFollowError() {
         return new ApiError(404, "Ви вже підписані на цього користувача");
     }
+
     static UnFollowError() {
         return new ApiError(404, "Ви не підписані на цього користувача!");
     }
