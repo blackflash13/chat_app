@@ -24,17 +24,27 @@ class UserController {
             const userData = await userService.registration(email, password, name);
             return res.json(userData);
         } catch (e) {
-            next(e);
+            return res.json(e.message);
+            next(e.message);
+
         }
     }
 
     async login(req, res, next) {
         try {
+            const errors = validationResult(req);
+
+            if (!errors.isEmpty())
+                return next(
+                    ApiError.BadRequest("Помилка валідації даних", errors.array())
+                );
+
             const {email, password} = req.body;
             const userData = await userService.login(email, password);
             return res.json(userData);
         } catch (e) {
-            next(e);
+            return res.json(e.message);
+            next(e.message);
         }
     }
 
