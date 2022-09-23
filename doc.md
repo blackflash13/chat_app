@@ -16,9 +16,7 @@
 
 &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; 1. email - String
 
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; 2. password - String
-
-&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; 3. name - String
+&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; 2. name - String
 
 #
 

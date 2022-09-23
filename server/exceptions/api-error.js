@@ -12,6 +12,7 @@ module.exports = class ApiError extends Error {
         return new ApiError(401, "Користувач не авторизований");
     }
 
+
     static NewFollowError() {
         return new ApiError(404, "Ви вже підписані на цього користувача");
     }

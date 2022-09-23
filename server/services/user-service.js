@@ -10,9 +10,11 @@ class UserService {
 
         if (candidate) throw ApiError.BadRequest(`Користувач з електронною адресою ${email} вже зареєстрований на сайті!`);
 
-        const hashPassword = await bcrypt.hash(password, 10);
+        // if (password.length === 0) throw ApiError.EmptyPassword()
+
+        // const hashPassword = await bcrypt.hash(password, 10);
         const user = await UserModel.create({
-            email, name, password: hashPassword,
+            email, name, /*password: hashPassword,*/
         });
 
         return "Next step in OTP code"
